@@ -14,12 +14,12 @@ public class Generator
             System.out.println("Socket creation succeeded.");
 
             // Writes to the server via the socket.
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            out.println("HELO");
+            SendMessages message = new SendMessages();
+            message.writeMessage(clientSocket, "HELO");
 
             // Reads from the server.
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+            ReceiveMessages response = new ReceiveMessages();
+            response.getMessage(clientSocket);
         } catch (IOException e) {
             System.out.println("Socket creation failed.");
         }
