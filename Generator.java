@@ -12,16 +12,18 @@ public class Generator
             // Creates socket with imported host name.
             Socket clientSocket = new Socket(hostName, 5000);
             System.out.println("Socket creation succeeded.");
-
-            // Writes to the server via the socket.
-            SendMessages message = new SendMessages();
-            message.writeMessage(clientSocket, "HELO");
-
+			
+			// Send messages to server
+			SendMessages message = new SendMessages();
+			message.writeMessage(clientSocket);
+			
             // Reads from the server.
-            ReceiveMessages response = new ReceiveMessages();
-            response.getMessage(clientSocket);
+            // ReceiveMessages response = new ReceiveMessages();
+            // response.getMessage(clientSocket);
+			
+			clientSocket.close();
         } catch (IOException e) {
-            System.out.println("Socket creation failed.");
+            System.out.println("Socket creation failed: " + e);
         }
     }
 }
