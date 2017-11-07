@@ -3,7 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.lang.*;
 
-public class SendMessages
+public class SendMessages extends Thread
 {
     public void writeMessage(Socket clientSocket)
     {

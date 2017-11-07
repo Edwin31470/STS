@@ -15,6 +15,8 @@ public class Generator
 			
 			// Send messages to server
 			SendMessages message = new SendMessages();
+			Thread sendThread = new Thread(message);
+			sendThread.start();
 			message.writeMessage(clientSocket);
 			
             // Reads from the server.
