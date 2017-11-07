@@ -5,9 +5,16 @@ import java.lang.*;
 
 public class SendMessages extends Thread
 {
+	Random rnd = new Random();
+	
     public void writeMessage(Socket clientSocket)
     {
-        try
+		for(int i = 0; i < 30; i++)
+		{
+			System.out.println("write: " + rnd.nextInt(100));
+		}
+
+        /* try
         {
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			
@@ -28,6 +35,6 @@ public class SendMessages extends Thread
 			}
         } catch (IOException e) {
             System.out.println("Message not sent");
-        }
+        } */
     }
 }

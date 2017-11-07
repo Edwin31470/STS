@@ -15,13 +15,16 @@ public class Generator
 			
 			// Send messages to server
 			SendMessages message = new SendMessages();
-			Thread sendThread = new Thread(message);
-			sendThread.start();
-			message.writeMessage(clientSocket);
+			ReceiveMessages response = new ReceiveMessages();
 			
-            // Reads from the server.
-            // ReceiveMessages response = new ReceiveMessages();
-            // response.getMessage(clientSocket);
+			Thread sendThread = new Thread(message);
+			Thread getThread = new Thread(response);
+
+			getThread.start();
+			sendThread.start();
+            
+			message.writeMessage(clientSocket);
+			response.getMessage(clientSocket);
 			
 			clientSocket.close();
         } catch (IOException e) {
