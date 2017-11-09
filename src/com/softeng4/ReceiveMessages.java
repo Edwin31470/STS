@@ -8,25 +8,29 @@ import java.lang.*;
 public class ReceiveMessages extends Thread
 {
 	Random rnd = new Random();
-	
-    public void getMessage(Socket clientSocket)
+
+	Socket clientSocket;
+
+	public ReceiveMessages(Socket clientSocket)
+	{
+		this.clientSocket = clientSocket;
+	}
+
+    public void run()
     {
-		for(int i = 0; i < 30; i++)
-		{
-			System.out.println("Recieve: " + rnd.nextInt(100));
-		}
-        /* try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-			
+
+            // Infinitely looks at the socket for messages.
 			String message;
-			while((message = stdIn.readLine()) != null)
+			while((message = in.readLine()) != null)
 			{
 				System.out.println(message);
 			}
         } catch (IOException e)
         {
-            System.out.println("Cannot reach response");
-        } */
+            System.out.println("Receive Message Error: " + e);
+        }
     }
 }

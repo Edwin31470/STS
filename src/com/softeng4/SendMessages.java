@@ -8,27 +8,34 @@ import java.lang.*;
 public class SendMessages extends Thread
 {
 	Random rnd = new Random();
-	
-    public void writeMessage(Socket clientSocket)
-    {
-		for(int i = 0; i < 30; i++)
-		{
-			System.out.println("write: " + rnd.nextInt(100));
-		}
+	Socket clientSocket;
 
-        /* try
+	public SendMessages(Socket clientSocket)
+	{
+		// Assigns clientSocket to internal variable.
+		this.clientSocket = clientSocket;
+	}
+
+    public void run()
+    {
+        try
         {
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			
+            PrintWriter out = new PrintWriter(this.clientSocket.getOutputStream(), true);
+            // Reader for reading in commands through IntelliJ.
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+            // Reads in commands until closing connection with server.
 			boolean notDone = true;
 			while(notDone)
 			{
 				System.out.println("Enter a command: ");
-				String command = System.console().readLine();
+				String command = br.readLine();
 
-				if (command.equals("CLOSE"))
+				if (command.equals("EXIT"))
 				{
+					out.println(command);
 					notDone = false;
+					this.clientSocket.close();
 				}
 				else
 				{
@@ -36,7 +43,7 @@ public class SendMessages extends Thread
 				}	
 			}
         } catch (IOException e) {
-            System.out.println("Message not sent");
-        } */
+            System.out.println("Send Message Error: " + e);
+        }
     }
 }

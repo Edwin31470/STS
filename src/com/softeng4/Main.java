@@ -14,21 +14,10 @@ public class Main
             // Creates socket with imported host name.
             Socket clientSocket = new Socket(hostName, 5000);
             System.out.println("Socket creation succeeded.");
-			
-			// Send messages to server
-			SendMessages message = new SendMessages();
-			ReceiveMessages response = new ReceiveMessages();
-			
-			Thread sendThread = new Thread(message);
-			Thread getThread = new Thread(response);
 
-			getThread.start();
-			sendThread.start();
-            
-			message.writeMessage(clientSocket);
-			response.getMessage(clientSocket);
-			
-			clientSocket.close();
+            // Starts threads using specific classes for asynchronous connection.
+			new SendMessages(clientSocket).start();
+			new ReceiveMessages(clientSocket).start();
         } catch (IOException e) {
             System.out.println("Socket creation failed: " + e);
         }
