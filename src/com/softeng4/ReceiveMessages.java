@@ -27,6 +27,12 @@ public class ReceiveMessages extends Thread
 			while((message = in.readLine()) != null)
 			{
 				System.out.println(message);
+				if((message.length() > 13) && (message.substring(0,13).equals("REGI:SUCCESS:")))
+				{
+					String ID = message.substring(13);
+					Main.clientID = ID;
+					System.out.println(Main.clientID);
+				}
 			}
         } catch (IOException e)
         {

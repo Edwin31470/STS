@@ -7,6 +7,8 @@ import java.lang.*;
 
 public class Main
 {
+    public static volatile String clientID;
+
     public static void main (String[] args)
     {
         String hostName = args[0];

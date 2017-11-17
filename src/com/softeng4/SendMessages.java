@@ -24,6 +24,9 @@ public class SendMessages extends Thread
             // Reader for reading in commands through IntelliJ.
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+            out.println("HELO");
+            out.println("REGI");
+
             // Reads in commands until closing connection with server.
 			boolean notDone = true;
 			while(notDone)
