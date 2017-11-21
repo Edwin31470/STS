@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.*;
+import java.text.*;
+import java.util.*;
 
 class ClientConnect extends Thread
 {
@@ -13,11 +15,17 @@ class ClientConnect extends Thread
     protected boolean isRegistered = false;
     protected String[] tokens;
 
+    Calendar cal;
+    SimpleDateFormat sdf;
+
     public ClientConnect(Socket aSocket, StockMarket aSM)
     {
         clientSocket = aSocket;
         mySMRef = aSM;
         start();
+
+        cal = Calendar.getInstance();
+        sdf = new SimpleDateFormat("HH:mm:ss");
     }
 
     public void run()
@@ -61,12 +69,17 @@ class ClientConnect extends Thread
 
                     out.println("REGI:SUCCESS:"+ID);
                     out.println("");
-                    mySMRef.registerUser(ID);
-                    isRegistered = false;
+                    isRegistered = mySMRef.registerUser(Integer.parseInt(ID));
                 }
                 else if(inputText.equals("DISP"))
                 {   // Display Stock Market
-                    if(mySMRef.checkID(tokens[3]))
+
+                    tokens = inputText.split(":");
+                    out.println("DEBUG: You entered: DISP");
+                    System.out.println("DEBUG: DISP");
+                    System.out.println("DEBUG: Tokens is: " + tokens.length + " in size -- Value of [1] is: " + tokens[1]);
+
+                    if(mySMRef.checkID(Integer.parseInt(tokens[1])))
                     {
                         String [][] aStock = mySMRef.getStockMarketState();
                         //objectOut.writeObject(mySMRef.getStockMarketState());
@@ -74,12 +87,15 @@ class ClientConnect extends Thread
                         {                            
                             out.println("STK:"+aStock[i][0]+":"+aStock[i][1]+":"+aStock[i][3]);
                         }
+                        System.out.println("TIME:" + sdf.format(cal.getTime()) );
+                        out.println("TIME:" + sdf.format(cal.getTime()) );
                         out.println("END:EOF");
                         out.println("");
                     }
                     else
                     {
                         out.println("ERR:Not Registered");
+                        System.out.println("User not registered.");
                         out.println("");
                     }
                 }
@@ -87,9 +103,9 @@ class ClientConnect extends Thread
                 {
                     tokens = inputText.split(":");
                     
-                    if(mySMRef.checkID(tokens[3]))
+                    if(mySMRef.checkID(Integer.parseInt(tokens[3])))
                     {
-                        out.println("ACK:BOUGHT:"+ tokens[2] + " shares:In " + tokens[1] + ":@" + mySMRef.checkSharePrice(tokens[1]));
+                        out.println(mySMRef.buyShares(tokens));
                     }
                     else
                     {
@@ -99,9 +115,12 @@ class ClientConnect extends Thread
                 }
                 else if(inputText.equals("SELL"))
                 {
-                    if(isRegistered)
+                    tokens = inputText.split(":");
+
+                    if(mySMRef.checkID(Integer.parseInt(tokens[3])))
                     {
-                        out.println("ACK:SELL:Not implemented yet!");
+                        out.println(mySMRef.sellShares(tokens));
+
                     }
                     else
                     {
@@ -109,14 +128,31 @@ class ClientConnect extends Thread
                     }
                     out.println("");
                 }
+                else if(inputText.startsWith("CASH"))
+                {
+                    tokens = inputText.split(":");
+
+                    if(mySMRef.checkID(Integer.parseInt(tokens[1])) == true)
+                    {
+                        String tempStr = mySMRef.checkCash(tokens[1]);
+                        out.println(tempStr);
+                    }
+                    else
+                    {
+                        out.println("ERR:Not Registered");
+                    }
+                    out.println("");
+
+                }
                 else if(inputText.equals("HELP"))
                 {
                     out.println("Commands:");
-                    out.println("REGI:");
-                    out.println("BUY:");
-                    out.println("SELL:");
-                    out.println("EXIT:");
-                    out.println("DISP:");
+                    out.println("REGI: - Allows authentication with the system.");
+                    out.println("BUY: - Allows the purchasing of shares.");
+                    out.println("SELL: - Allows the selling of shares.");
+                    out.println("EXIT: - Exit the system (lose all shares and funds).");
+                    out.println("DISP: - Display current Stock market values.");
+                    out.println("CASH: - Display your remaining cash balance (not including shares owned).");
                     out.println("");
                 }
                 else
