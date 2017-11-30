@@ -18,8 +18,10 @@ public class Main
             System.out.println("Socket creation succeeded.");
 
             // Starts threads using specific classes for asynchronous connection.
-			new SendMessages(clientSocket).start();
-			new ReceiveMessages(clientSocket).start();
+
+            SendMessages.GetInstance(clientSocket).start();
+            ReceiveMessages.GetInstance(clientSocket).start();
+
         } catch (IOException e) {
             System.out.println("Socket creation failed: " + e);
         }

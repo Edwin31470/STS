@@ -7,13 +7,23 @@ import java.lang.*;
 
 public class SendMessages extends Thread
 {
+	static SendMessages ref;
 	Random rnd = new Random();
 	Socket clientSocket;
 
-	public SendMessages(Socket clientSocket)
+	private SendMessages(Socket clientSocket)
 	{
 		// Assigns clientSocket to internal variable.
 		this.clientSocket = clientSocket;
+	}
+
+	public static SendMessages GetInstance(Socket clientSocket)
+	{
+		if(ref == null)
+		{
+			ref = new SendMessages(clientSocket);
+		}
+		return ref;
 	}
 
     public void run()
