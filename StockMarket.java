@@ -25,8 +25,8 @@ public class StockMarket implements Runnable
 
     private StockMarket()
     {
-        stockData = new String[10][4];
-        stockDataDeltas = new String[10][2503];
+        stockData = new String[100][4];
+        stockDataDeltas = new String[100][2503];
         populateStockData();
         lastTime = System.currentTimeMillis() - PERIOD;
         rnd = new Random();
@@ -253,7 +253,7 @@ public class StockMarket implements Runnable
             System.out.println("Something went wrong: " + e);
         }
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 100; i++)
         {
             stockData[i][0] = stockDataDeltas[i][0];
             stockData[i][1] = stockDataDeltas[i][1];
@@ -261,7 +261,7 @@ public class StockMarket implements Runnable
             stockData[i][3] = stockDataDeltas[i][3];
         }
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 100; i++)
         {
             for (int j = 0; j < 3; j++)
             {
