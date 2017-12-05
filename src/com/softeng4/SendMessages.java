@@ -43,7 +43,17 @@ public class SendMessages extends Thread
 				}
 				else if (command.equals("DISP"))
 				{
-					out.println(command + ":" + Main.clientID);
+					for(int i = 0; i < Main.theStocks.length; i++)
+					{
+						Stock stock = Main.theStocks[i];
+						System.out.println(stock.getName() + ":" + stock.getValue());
+
+						for(int j = 0; j < 5; j++)
+						{
+							System.out.print(Main.theStocks[i].getChanges()[j]);
+						}
+					}
+
 				}
 				else
 				{

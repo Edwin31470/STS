@@ -8,6 +8,7 @@ import java.lang.*;
 public class Main
 {
     public static volatile String clientID;
+    public static volatile Stock[] theStocks = new Stock[100];
 
     public static void main (String[] args)
     {
