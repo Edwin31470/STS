@@ -1,5 +1,7 @@
 package com.softeng4;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -7,7 +9,6 @@ import java.lang.*;
 
 public class SendMessages extends Thread
 {
-	Random rnd = new Random();
 	Socket clientSocket;
 
 	public SendMessages(Socket clientSocket)
@@ -40,10 +41,15 @@ public class SendMessages extends Thread
 					notDone = false;
 					this.clientSocket.close();
 				}
+				else if (command.equals("DISP"))
+				{
+					out.println(command + ":" + Main.clientID);
+				}
 				else
 				{
 					out.println(command);
-				}	
+				}
+
 			}
         } catch (IOException e) {
             System.out.println("Send Message Error: " + e);

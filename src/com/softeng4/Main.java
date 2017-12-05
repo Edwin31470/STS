@@ -20,6 +20,7 @@ public class Main
             // Starts threads using specific classes for asynchronous connection.
 			new SendMessages(clientSocket).start();
 			new ReceiveMessages(clientSocket).start();
+            new RequestUpdates(clientSocket).start();
         } catch (IOException e) {
             System.out.println("Socket creation failed: " + e);
         }
