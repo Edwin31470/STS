@@ -71,7 +71,7 @@ class ClientConnect extends Thread
                     out.println("");
                     isRegistered = mySMRef.registerUser(Integer.parseInt(ID));
                 }
-                else if(inputText.equals("DISP"))
+                else if(inputText.startsWith("DISP"))
                 {   // Display Stock Market
 
                     tokens = inputText.split(":");

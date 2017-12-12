@@ -8,6 +8,7 @@ import java.lang.*;
 public class Main
 {
     public static volatile String clientID;
+    public static volatile Stock[] theStocks = new Stock[100];
 
     public static void main (String[] args)
     {
@@ -20,6 +21,7 @@ public class Main
             // Starts threads using specific classes for asynchronous connection.
 			new SendMessages(clientSocket).start();
 			new ReceiveMessages(clientSocket).start();
+            new RequestUpdates(clientSocket).start();
         } catch (IOException e) {
             System.out.println("Socket creation failed: " + e);
         }

@@ -1,5 +1,7 @@
 package com.softeng4;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -7,7 +9,6 @@ import java.lang.*;
 
 public class SendMessages extends Thread
 {
-	Random rnd = new Random();
 	Socket clientSocket;
 
 	public SendMessages(Socket clientSocket)
@@ -40,10 +41,25 @@ public class SendMessages extends Thread
 					notDone = false;
 					this.clientSocket.close();
 				}
+				else if (command.equals("DISP"))
+				{
+					for(int i = 0; i < Main.theStocks.length; i++)
+					{
+						Stock stock = Main.theStocks[i];
+						System.out.println(stock.getName() + ":" + stock.getValue());
+
+						for(int j = 0; j < 5; j++)
+						{
+							System.out.print(Main.theStocks[i].getChanges()[j]);
+						}
+					}
+
+				}
 				else
 				{
 					out.println(command);
-				}	
+				}
+
 			}
         } catch (IOException e) {
             System.out.println("Send Message Error: " + e);
