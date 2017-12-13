@@ -9,13 +9,24 @@ import java.lang.*;
 
 public class ReceiveMessages extends Thread
 {
+	static ReceiveMessages ref;
+
 	Random rnd = new Random();
 
 	Socket clientSocket;
 
-	public ReceiveMessages(Socket clientSocket)
+	private ReceiveMessages(Socket clientSocket)
 	{
 		this.clientSocket = clientSocket;
+	}
+
+	public static ReceiveMessages GetInstance(Socket clientSocket)
+	{
+		if(ref == null)
+		{
+			ref = new ReceiveMessages(clientSocket);
+		}
+		return ref;
 	}
 
     public void run()
