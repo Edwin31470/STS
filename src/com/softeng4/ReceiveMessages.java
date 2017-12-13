@@ -1,5 +1,7 @@
 package com.softeng4;
 
+import com.sun.org.apache.bcel.internal.generic.GOTO;
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -37,17 +39,45 @@ public class ReceiveMessages extends Thread
 			String message;
 			while((message = in.readLine()) != null)
 			{
-				System.out.println(message);
-				if((message.length() > 13) && (message.substring(0,13).equals("REGI:SUCCESS:")))
+				String[] splitMessage = message.split(":");
+				if(splitMessage[0] == "REGI")
 				{
-					String ID = message.substring(13);
-					Main.clientID = ID;
+					Main.clientID = splitMessage[2];
 					System.out.println(Main.clientID);
 				}
+				else if(splitMessage[0] == "UPD")
+				{
+					boolean found = false;
+					for (int i = 0; i < Main.theStocks.length; i++)
+					{
+						if (Main.theStocks[i].getName() == splitMessage[1])
+						{
+							found = true;
+							Main.theStocks[i].setValue(splitMessage[2]);
+							Main.theStocks[i].setNextChange(splitMessage[3]);
+						}
+					}
+					boolean set = false;
+					if (!found)
+					{
+						while (!set)
+						{
+							int cnt = 0;
+							if (Main.theStocks[cnt] == null)
+							{
+								Main.theStocks[cnt] = new Stock();
+								Main.theStocks[cnt].setName(splitMessage[1]);
+								Main.theStocks[cnt].setValue(splitMessage[2]);
+								Main.theStocks[cnt].setNextChange(splitMessage[3]);
+								set = true;
+							}
+							cnt++;
+						}
+					}
+				}
 			}
-        } catch (IOException e)
-        {
-            System.out.println("Receive Message Error: " + e);
-        }
-    }
+        } catch (IOException e) {
+			System.out.println("Receive Message Error: " + e);
+		}
+	}
 }
